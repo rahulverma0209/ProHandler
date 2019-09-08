@@ -1,14 +1,14 @@
 package com.example.tryauth;
 
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.*;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.*;
+import android.widget.*;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,10 +17,13 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private Toolbar mtoolbar;
-    private ViewPager mviewPager;                               //For creating tabs
-    private SelectionPagerAdapter selectionPagerAdapter;        //For Selection Tabs
 
-    private TabLayout mtabLayout;
+
+    //For BottomNavigation
+    private BottomNavigationView mBottomNav;
+    private FrameLayout mainPageFrame;
+    private NotificationFragment notificationFragment;
+    private ProgressFragment progressFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +36,31 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mtoolbar);
         getSupportActionBar().setTitle("ProHandler");
 
-        //Tabs
-        mviewPager = findViewById(R.id.tabPager);
-        selectionPagerAdapter = new SelectionPagerAdapter(getSupportFragmentManager());
-        mviewPager.setAdapter(selectionPagerAdapter);
+        //BottomNavigation
+        mainPageFrame = findViewById(R.id.main_page_frame);
+        mBottomNav = findViewById(R.id.bottom_nav);
 
+        notificationFragment = new NotificationFragment();
+        progressFragment = new ProgressFragment();
 
-        mtabLayout = findViewById(R.id.mainTab);
-        mtabLayout.setupWithViewPager(mviewPager);
+        setFragment(notificationFragment);
+
+        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                switch (menuItem.getItemId()){
+                    case R.id.home_bottom:
+                        setFragment(notificationFragment);
+                        return true;
+                    case R.id.progress_bottom:
+                        setFragment(progressFragment);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
     }
 
     //Checking if user is already logged in or not
@@ -92,5 +112,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    //to load new fragment when bottom is pressed
+    private void setFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_page_frame,fragment);
+        fragmentTransaction.commit();
     }
 }
