@@ -128,8 +128,12 @@ public class NotificationFragment extends Fragment {
                 img.setBackgroundResource(R.drawable.pdf_logo);
             else if(s.contains(".doc") || s.contains(".docx") || s.contains(".txt"))
                 img.setBackgroundResource(R.drawable.doc_logo);
+            else if(s.contains(".xlsx") || s.contains(".xlsm"))
+                img.setBackgroundResource(R.drawable.excel_logo);
+            else if(s.contains(".ppt") || s.contains(".pptx"))
+                img.setBackgroundResource(R.drawable.powerpoint_logo);
             else {
-
+                img.setBackgroundResource(R.drawable.notifi_logo);
             }
         }
     }
