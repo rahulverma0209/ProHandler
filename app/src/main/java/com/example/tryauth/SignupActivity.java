@@ -25,7 +25,6 @@ public class SignupActivity extends AppCompatActivity {
 
     EditText name,usn,email,password,confirm_password;
     Button signup,cancel;
-    RadioButton rb1;
 
     private Toolbar mtoolbar;
 
@@ -108,7 +107,7 @@ public class SignupActivity extends AppCompatActivity {
             Toast.makeText(SignupActivity.this,"Empty Field",Toast.LENGTH_LONG).show();
             return false;
         }
-        if(!musn.matches("[1][A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{3}"))
+        if(!musn.matches("[1][A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{3}")  && !musn.matches("[N][H][-][0-9]{4}"))
         {
             Toast.makeText(SignupActivity.this,"InValid USN",Toast.LENGTH_LONG).show();
             return false;
@@ -149,60 +148,62 @@ public class SignupActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
-                            FirebaseUser currentUser = mAuth.getCurrentUser();
+                            final FirebaseUser currentUser = mAuth.getCurrentUser();
 
                             //Saving all details to FireBase
                             String uid = currentUser.getUid();      //Getting FireBase UID
-                            rb1 = findViewById(R.id.rbStudent);
-                            if(rb1.isChecked())
-                                firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("students").child(uid);
-                            else
-                                firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("teachers").child(uid);
+                            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+
                             HashMap<String,String> userData = new HashMap<>();
                             userData.put("name",mname);
                             userData.put("usn",usn);
                             userData.put("email",email);
+                            if(usn.startsWith("1NH"))
+                                userData.put("user_type","student");
+                            else
+                                userData.put("user_type","teacher");
 
-                            firebaseDatabase.setValue(userData);
-
-
-
-                            //Sending Verification mail
-                            currentUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            //Adding data to Database
+                            firebaseDatabase.setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isComplete())
-                                    {
-                                        //If task completed the dismiss the progress dialog
-                                        signProgressDialog.dismiss();
+                                    //If data is added
+                                    if(task.isSuccessful()){
 
-
-                                        //AlertDialog to display sent
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(SignupActivity.this);
-                                        builder.setTitle("Sent");
-                                        builder.setMessage("Verification Mail Sent Successfully");
-                                        builder.setCancelable(false);
-                                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        //Sending Verification mail
+                                        currentUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                //Send to Login Page
-                                                Intent start=new Intent(SignupActivity.this,StartActivity.class);
-                                                startActivity(start);
-                                                finish();
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isComplete())
+                                                {
+                                                    //If task completed the dismiss the progress dialog
+                                                    signProgressDialog.dismiss();
+
+
+                                                    //AlertDialog to display sent
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(SignupActivity.this);
+                                                    builder.setTitle("Sent");
+                                                    builder.setMessage("Verification Mail Sent Successfully");
+                                                    builder.setCancelable(false);
+                                                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            //Send to Login Page
+                                                            Intent start=new Intent(SignupActivity.this,StartActivity.class);
+                                                            startActivity(start);
+                                                            finish();
+                                                        }
+                                                    });
+                                                    builder.show();
+
+                                                    Toast.makeText(SignupActivity.this,"Mail Sent",Toast.LENGTH_LONG).show();
+                                                }
                                             }
                                         });
-                                        builder.show();
-
-                                        Toast.makeText(SignupActivity.this,"Mail Sent",Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
 
-
-                            //Toast.makeText(SignupActivity.this,"Successful",Toast.LENGTH_LONG).show();
-                            /*Intent startMainIntent=new Intent(SignupActivity.this,MainActivity.class);
-                            startActivity(startMainIntent);
-                            finish();*/
                         }
                         else {
                             signProgressDialog.hide();

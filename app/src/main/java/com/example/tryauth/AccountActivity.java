@@ -32,7 +32,7 @@ public class AccountActivity extends AppCompatActivity {
         String uid = currentUser.getUid();
 
         //for student
-        fireBaseDataBase = FirebaseDatabase.getInstance().getReference().child("students").child(uid);
+        fireBaseDataBase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
 
         fireBaseDataBase.addValueEventListener(new ValueEventListener() {
             //For retrieving the data
