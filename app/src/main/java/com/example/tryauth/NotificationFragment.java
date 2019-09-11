@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.*;
 import android.view.*;
@@ -22,6 +23,7 @@ public class NotificationFragment extends Fragment {
     private RecyclerView recycler_notif;
     private DatabaseReference firedb;
     private View mView;
+    private FloatingActionButton fab;
 
     public NotificationFragment() {
         // Required empty public constructor
@@ -31,17 +33,35 @@ public class NotificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
+
+
+
+        Toast.makeText(getContext(),MainActivity.currentUserData.getName(),Toast.LENGTH_LONG).show();
 
         mView = inflater.inflate(R.layout.fragment_notification, container, false);
 
+        //Connecting to DB
         firedb = FirebaseDatabase.getInstance().getReference().child("Notification").child("7");
         firedb.keepSynced(true);
 
+        //RecyclerView
         recycler_notif = mView.findViewById(R.id.rv);
         recycler_notif.setHasFixedSize(true);
         recycler_notif.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        fab =  mView.findViewById(R.id.fab);
+
+        if(MainActivity.currentUserData.getUser_type().equals("student"))
+            fab.setVisibility(View.INVISIBLE);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Incomplete",Toast.LENGTH_LONG).show();
+
+            }
+        });
         return mView;
     }
 

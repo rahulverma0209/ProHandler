@@ -33,6 +33,7 @@ public class AccountActivity extends AppCompatActivity {
 
         //for student
         fireBaseDataBase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+        fireBaseDataBase.keepSynced(true);
 
         fireBaseDataBase.addValueEventListener(new ValueEventListener() {
             //For retrieving the data

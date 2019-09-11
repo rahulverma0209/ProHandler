@@ -1,5 +1,6 @@
 package com.example.tryauth;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,12 +13,17 @@ import android.widget.*;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private Toolbar mtoolbar;
-
+    public static UserData currentUserData;
 
     //For BottomNavigation
     private BottomNavigationView mBottomNav;
@@ -31,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        currentUserData = new UserData("null","null","null","null");
 
         mtoolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mtoolbar);
@@ -73,6 +80,51 @@ public class MainActivity extends AppCompatActivity {
         if(currentUser==null || !currentUser.isEmailVerified())
         {
             sendToLoginPage();
+        }
+        else if(currentUserData.getName().equals("null")) {
+
+
+            /*ProgressDialog loginProgressDialog = new ProgressDialog(this);
+            loginProgressDialog.setTitle("Login In");
+            loginProgressDialog.setMessage("Please wait checking credentials");
+            loginProgressDialog.setCanceledOnTouchOutside(false);
+            loginProgressDialog.show();*/
+
+
+            //Store Current data so that can be use later
+            String uid = currentUser.getUid();
+
+            DatabaseReference fireBaseDataBase;
+            fireBaseDataBase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+            fireBaseDataBase.keepSynced(true);
+
+            fireBaseDataBase.addValueEventListener(new ValueEventListener() {
+                //For retrieving the data
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String name = dataSnapshot.child("name").getValue().toString();
+                    String usn = dataSnapshot.child("usn").getValue().toString();
+                    String user_type = dataSnapshot.child("user_type").getValue().toString();
+                    String email = dataSnapshot.child("email").getValue().toString();
+
+                    //Storing in static variable
+                    currentUserData.setName(name);
+                    currentUserData.setUsn(usn);
+                    currentUserData.setUser_type(user_type);
+                    currentUserData.setEmail(email);
+                }
+
+                //For handling errors
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+            //loginProgressDialog.hide();
+            //loginProgressDialog.dismiss();
+
         }
     }
 
@@ -119,5 +171,11 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_page_frame,fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Toast.makeText(MainActivity.this,"Stopping MainActivity",Toast.LENGTH_LONG).show();
     }
 }

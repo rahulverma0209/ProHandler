@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 public class SignupActivity extends AppCompatActivity {
 
-    EditText name,usn,email,password,confirm_password;
+    EditText name,usn,email,password,confirm_password,sem;
     Button signup,cancel;
 
     private Toolbar mtoolbar;
@@ -51,6 +51,7 @@ public class SignupActivity extends AppCompatActivity {
 
         name = findViewById(R.id.name);
         usn = findViewById(R.id.usn);
+        sem = findViewById(R.id.sem);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         confirm_password = findViewById(R.id.confirm_password);
@@ -69,11 +70,12 @@ public class SignupActivity extends AppCompatActivity {
                 String mname=name.getText().toString();
                 String musn=usn.getText().toString();
                     musn = musn.toUpperCase();
+                String msem=sem.getText().toString();
                 String memail=email.getText().toString();
                 String mpassword=password.getText().toString();
                 String mconfirm_password=confirm_password.getText().toString();
 
-                if(validateFields(mname,musn,memail,mpassword,mconfirm_password))
+                if(validateFields(mname,musn,msem,memail,mpassword,mconfirm_password))
                 {
                     Toast.makeText(SignupActivity.this,"Valid Details",Toast.LENGTH_LONG).show();
 
@@ -83,7 +85,7 @@ public class SignupActivity extends AppCompatActivity {
                     signProgressDialog.setCanceledOnTouchOutside(false);
                     signProgressDialog.show();
 
-                    signUpUser(mname,musn,memail,mpassword);
+                    signUpUser(mname,musn,msem,memail,mpassword);
                 }
             }
         });
@@ -100,7 +102,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     //Validating all entered data
-    Boolean validateFields(String mname, String musn, String memail, String mpassword, String mconfirm_password){
+    Boolean validateFields(String mname, String musn, String msem, String memail, String mpassword, String mconfirm_password){
 
         if(mname.equals("") || musn.equals("") || memail.equals("") || mpassword.equals(""))
         {
@@ -110,6 +112,11 @@ public class SignupActivity extends AppCompatActivity {
         if(!musn.matches("[1][A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{3}")  && !musn.matches("[N][H][-][0-9]{4}"))
         {
             Toast.makeText(SignupActivity.this,"InValid USN",Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(musn.startsWith("1NH") && !msem.matches("[3-8]{1}")){
+            Toast.makeText(SignupActivity.this,"InValid Sem",Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -141,7 +148,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     //Registering the user And Sending Verification mail
-    private void signUpUser(final String mname, final String usn, final String email, String password) {
+    private void signUpUser(final String mname, final String usn, final String msem, final String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -159,9 +166,15 @@ public class SignupActivity extends AppCompatActivity {
                             userData.put("usn",usn);
                             userData.put("email",email);
                             if(usn.startsWith("1NH"))
+                            {
                                 userData.put("user_type","student");
+                                userData.put("sem",msem);
+                            }
                             else
+                            {
                                 userData.put("user_type","teacher");
+                                userData.put("sem","na");
+                            }
 
                             //Adding data to Database
                             firebaseDatabase.setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
