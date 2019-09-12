@@ -11,13 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.*;
 import android.widget.*;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.*;
+import com.google.firebase.database.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +32,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        //If not signed in then direct to first page
+        if(currentUser==null || !currentUser.isEmailVerified())
+        {
+            sendToLoginPage();
+        }
+
+
         currentUserData = new UserData("null","null","null","null");
+
+
+        loadCurrentUserData();
+
 
         mtoolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mtoolbar);
@@ -73,59 +82,14 @@ public class MainActivity extends AppCompatActivity {
     //Checking if user is already logged in or not
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        /*// Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //If not signed in then direct to first page
         if(currentUser==null || !currentUser.isEmailVerified())
         {
             sendToLoginPage();
-        }
-        else if(currentUserData.getName().equals("null")) {
-
-
-            /*ProgressDialog loginProgressDialog = new ProgressDialog(this);
-            loginProgressDialog.setTitle("Login In");
-            loginProgressDialog.setMessage("Please wait checking credentials");
-            loginProgressDialog.setCanceledOnTouchOutside(false);
-            loginProgressDialog.show();*/
-
-
-            //Store Current data so that can be use later
-            String uid = currentUser.getUid();
-
-            DatabaseReference fireBaseDataBase;
-            fireBaseDataBase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
-            fireBaseDataBase.keepSynced(true);
-
-            fireBaseDataBase.addValueEventListener(new ValueEventListener() {
-                //For retrieving the data
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String name = dataSnapshot.child("name").getValue().toString();
-                    String usn = dataSnapshot.child("usn").getValue().toString();
-                    String user_type = dataSnapshot.child("user_type").getValue().toString();
-                    String email = dataSnapshot.child("email").getValue().toString();
-
-                    //Storing in static variable
-                    currentUserData.setName(name);
-                    currentUserData.setUsn(usn);
-                    currentUserData.setUser_type(user_type);
-                    currentUserData.setEmail(email);
-                }
-
-                //For handling errors
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-
-            //loginProgressDialog.hide();
-            //loginProgressDialog.dismiss();
-
-        }
+        }*/
     }
 
     //Opening Login Page
@@ -173,9 +137,54 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Toast.makeText(MainActivity.this,"Stopping MainActivity",Toast.LENGTH_LONG).show();
+    private void loadCurrentUserData(){
+
+        if(currentUserData.getName().equals("null")) {
+
+
+            /*ProgressDialog loginProgressDialog = new ProgressDialog(this);
+            loginProgressDialog.setTitle("Loading");
+            loginProgressDialog.setMessage("Please wait loading credentials");
+            loginProgressDialog.setCanceledOnTouchOutside(false);
+            loginProgressDialog.show();*/
+
+
+            //Store Current data so that can be use later
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            String uid = currentUser.getUid();
+
+            DatabaseReference fireBaseDataBase;
+            fireBaseDataBase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+            fireBaseDataBase.keepSynced(true);
+
+            fireBaseDataBase.addValueEventListener(new ValueEventListener() {
+                //For retrieving the data
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String name = dataSnapshot.child("name").getValue().toString();
+                    String usn = dataSnapshot.child("usn").getValue().toString();
+                    String user_type = dataSnapshot.child("user_type").getValue().toString();
+                    String email = dataSnapshot.child("email").getValue().toString();
+
+                    //Storing in static variable
+                    currentUserData.setName(name);
+                    currentUserData.setUsn(usn);
+                    currentUserData.setUser_type(user_type);
+                    currentUserData.setEmail(email);
+                }
+
+                //For handling errors
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+            //loginProgressDialog.hide();
+            //loginProgressDialog.dismiss();
+
+        }
     }
 }

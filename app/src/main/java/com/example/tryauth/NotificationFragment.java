@@ -11,8 +11,9 @@ import android.view.*;
 import android.widget.*;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.*;
+
+import static com.example.tryauth.MainActivity.currentUserData;
 
 
 /**
@@ -36,9 +37,7 @@ public class NotificationFragment extends Fragment {
 
         // Inflate the layout for this fragment
 
-
-
-        Toast.makeText(getContext(),MainActivity.currentUserData.getName(),Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), currentUserData.getName(),Toast.LENGTH_LONG).show();
 
         mView = inflater.inflate(R.layout.fragment_notification, container, false);
 
@@ -53,7 +52,7 @@ public class NotificationFragment extends Fragment {
 
         fab =  mView.findViewById(R.id.fab);
 
-        if(MainActivity.currentUserData.getUser_type().equals("student"))
+        if(currentUserData.getUser_type().equals("student"))
             fab.setVisibility(View.INVISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,5 +156,4 @@ public class NotificationFragment extends Fragment {
             }
         }
     }
-
 }
