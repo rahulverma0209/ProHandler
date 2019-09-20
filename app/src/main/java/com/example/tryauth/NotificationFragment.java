@@ -52,13 +52,13 @@ public class NotificationFragment extends Fragment {
 
         fab =  mView.findViewById(R.id.fab);
 
-        if(currentUserData.getUser_type().equals("student"))
-            fab.setVisibility(View.INVISIBLE);
+        if(currentUserData.getUser_type().equals("teacher"))
+            fab.setVisibility(View.VISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Incomplete",Toast.LENGTH_LONG).show();
-
+                Intent start=new Intent(getContext(),UploadNotification.class);
+                startActivity(start);
             }
         });
         return mView;

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         currentUserData = new UserData("null","null","null","null");
 
-
+        //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         loadCurrentUserData();
 
 
@@ -141,13 +141,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(currentUserData.getName().equals("null")) {
 
-
-            /*ProgressDialog loginProgressDialog = new ProgressDialog(this);
+            ProgressDialog loginProgressDialog = new ProgressDialog(this);
             loginProgressDialog.setTitle("Loading");
             loginProgressDialog.setMessage("Please wait loading credentials");
             loginProgressDialog.setCanceledOnTouchOutside(false);
-            loginProgressDialog.show();*/
-
+            loginProgressDialog.show();
 
             //Store Current data so that can be use later
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -182,8 +180,8 @@ public class MainActivity extends AppCompatActivity {
             });
 
 
-            //loginProgressDialog.hide();
-            //loginProgressDialog.dismiss();
+            loginProgressDialog.hide();
+            loginProgressDialog.dismiss();
 
         }
     }
