@@ -107,6 +107,8 @@ public class UploadNotification extends AppCompatActivity {
             Toast.makeText(UploadNotification.this,"Title Field empty",Toast.LENGTH_LONG).show();
         else if(description.getText().toString().equals(""))
             Toast.makeText(UploadNotification.this,"Description Field empty",Toast.LENGTH_LONG).show();
+
+        //When document selected
         else if(docUri!=null)
         {
             if(docName.getText().toString().equals("") || !docName.getText().toString().contains("."))
@@ -151,24 +153,7 @@ public class UploadNotification extends AppCompatActivity {
                                                 loginProgressDialog.dismiss();
                                                 Toast.makeText(UploadNotification.this,"Uploaded",Toast.LENGTH_LONG).show();
 
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(UploadNotification.this);
-                                                builder.setTitle("Upload Status");
-                                                builder.setMessage("Notification Upload Successfully");
-                                                builder.setCancelable(false);
-                                                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        finish();
-                                                    }
-                                                });
-                                                builder.setNegativeButton("Add Notification", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        finish();
-                                                        startActivity(getIntent());
-                                                    }
-                                                });
-                                                builder.show();
+                                                showAlertBox();
                                             }
                                             else {
                                                 loginProgressDialog.dismiss();
@@ -186,6 +171,38 @@ public class UploadNotification extends AppCompatActivity {
                 });
             }
         }
+
+        //When document not selected
+        else {
+            HashMap<String,String> notificationData = new HashMap<>();
+            notificationData.put("name",title.getText().toString());
+            notificationData.put("dos",description.getText().toString());
+            notificationData.put("file","");
+
+            Long temp = Long.parseLong("1599223785549");
+            Long key = temp - (System.currentTimeMillis());
+
+            loginProgressDialog = new ProgressDialog(this);
+            loginProgressDialog.setTitle("Uploading");
+            loginProgressDialog.setMessage("Please wait uploading notification");
+            loginProgressDialog.setCanceledOnTouchOutside(false);
+            loginProgressDialog.show();
+
+            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("Notification").child("7").child(key.toString());
+            firebaseDatabase.setValue(notificationData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        loginProgressDialog.dismiss();
+                        showAlertBox();
+                    }
+                    else {
+                        Toast.makeText(UploadNotification.this,"Error",Toast.LENGTH_LONG).show();
+                        loginProgressDialog.dismiss();
+                    }
+                }
+            });
+        }
     }
 
 
@@ -197,5 +214,26 @@ public class UploadNotification extends AppCompatActivity {
             this.finish();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showAlertBox(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(UploadNotification.this);
+        builder.setTitle("Upload Status");
+        builder.setMessage("Notification Upload Successfully");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("Add Notification", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                startActivity(getIntent());
+            }
+        });
+        builder.show();
     }
 }
