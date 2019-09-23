@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private NotificationFragment notificationFragment;
     private ProgressFragment progressFragment;
 
+    ProgressDialog loginProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,15 +139,15 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void loadCurrentUserData(){
+    void loadCurrentUserData(){
 
         if(currentUserData.getName().equals("null")) {
 
-            ProgressDialog loginProgressDialog = new ProgressDialog(this);
+            /*loginProgressDialog = new ProgressDialog(this);
             loginProgressDialog.setTitle("Loading");
             loginProgressDialog.setMessage("Please wait loading credentials");
             loginProgressDialog.setCanceledOnTouchOutside(false);
-            loginProgressDialog.show();
+            loginProgressDialog.show();*/
 
             //Store Current data so that can be use later
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -170,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
                     currentUserData.setUsn(usn);
                     currentUserData.setUser_type(user_type);
                     currentUserData.setEmail(email);
+
+                    //loginProgressDialog.dismiss();
                 }
 
                 //For handling errors
@@ -178,10 +182,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-
-
-            loginProgressDialog.hide();
-            loginProgressDialog.dismiss();
 
         }
     }

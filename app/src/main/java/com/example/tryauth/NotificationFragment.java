@@ -35,8 +35,6 @@ public class NotificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-
         Toast.makeText(getContext(), currentUserData.getName(),Toast.LENGTH_LONG).show();
 
         mView = inflater.inflate(R.layout.fragment_notification, container, false);

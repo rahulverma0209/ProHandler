@@ -44,7 +44,6 @@ public class SignupActivity extends AppCompatActivity {
         mtoolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mtoolbar);
         getSupportActionBar().setTitle("Create Account");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -166,15 +165,15 @@ public class SignupActivity extends AppCompatActivity {
                             userData.put("name",mname);
                             userData.put("usn",usn);
                             userData.put("email",email);
-                            if(usn.startsWith("1NH"))
-                            {
-                                userData.put("user_type","student");
-                                userData.put("sem",msem);
-                            }
-                            else
+                            if(usn.startsWith("NH"))
                             {
                                 userData.put("user_type","teacher");
                                 userData.put("sem","na");
+                            }
+                            else
+                            {
+                                userData.put("user_type","student");
+                                userData.put("sem",msem);
                             }
 
                             //Adding data to Database
@@ -226,15 +225,4 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    //For back arrow key <-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id==android.R.id.home)
-            this.finish();
-
-        return super.onOptionsItemSelected(item);
-    }
-
 }
