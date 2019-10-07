@@ -1,5 +1,6 @@
 package com.example.tryauth;
 
+//Some bug in loading new Fragment
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +33,7 @@ public class StudentFragment extends Fragment {
     private View mView;
     ArrayAdapter<String> dataAdapter;
     public static String uid;
+    StudentChatFragment studentChatFragment;
     public String utid;
 
     public StudentFragment() {
@@ -76,7 +78,7 @@ public class StudentFragment extends Fragment {
                 try{
                     String name = dataSnapshot.child("tid").getValue().toString();
                     Toast.makeText(getContext(),name,Toast.LENGTH_LONG).show();
-                    StudentChatFragment studentChatFragment = new StudentChatFragment();
+                    studentChatFragment = new StudentChatFragment();
                     loadStudentChatFragment(studentChatFragment);
                 }
                 catch (NullPointerException exception){
@@ -177,16 +179,15 @@ public class StudentFragment extends Fragment {
         firebaseDatabase2.setValue(tdata).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                StudentChatFragment studentChatFragment = new StudentChatFragment();
-                loadStudentChatFragment(studentChatFragment);
+                //loadStudentChatFragment();
                 Toast.makeText(getContext(), "Added", Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    void loadStudentChatFragment(Fragment fragment){
+    void loadStudentChatFragment(Fragment studentChatFragment){
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_page_frame,fragment);
+        fragmentTransaction.replace(R.id.main_page_frame,studentChatFragment);
         fragmentTransaction.commit();
     }
 }
