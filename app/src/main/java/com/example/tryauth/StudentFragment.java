@@ -77,9 +77,9 @@ public class StudentFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try{
                     String name = dataSnapshot.child("tid").getValue().toString();
-                    Toast.makeText(getContext(),name,Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(),name,Toast.LENGTH_LONG).show();
                     studentChatFragment = new StudentChatFragment();
-                    loadStudentChatFragment(studentChatFragment);
+                    loadStudentChatFragment(studentChatFragment,name);
                 }
                 catch (NullPointerException exception){
                     loadListOfTeachers();
@@ -185,9 +185,14 @@ public class StudentFragment extends Fragment {
         });
     }
 
-    void loadStudentChatFragment(Fragment studentChatFragment){
+    void loadStudentChatFragment(Fragment studentChatFragment,String tid){
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_page_frame,studentChatFragment);
+
+        Bundle args=new Bundle();
+        args.putString("tid",tid);
+
+        studentChatFragment.setArguments(args);
         fragmentTransaction.commit();
     }
 }

@@ -10,4 +10,13 @@
         android:id="@+id/teacher_chat_toolbar"
         layout="@layout/app_bar_layout" />
 
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/teacher_chat_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teacher_chat_toolbar"
+        tools:layout_editor_absoluteX="70dp" />
+
 </android.support.constraint.ConstraintLayout>

@@ -3,4 +3,6 @@
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#3576CE</color>
     <color name="colorAccent">#3F51B5</color>
+    <color name="statusReject">#CBE76060</color>
+    <color name="statusAccept">#BF6CAD70</color>
 </resources>

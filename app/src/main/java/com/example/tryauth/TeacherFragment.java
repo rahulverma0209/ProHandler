@@ -33,6 +33,7 @@ public class TeacherFragment extends Fragment {
     private View mView;
     private DatabaseReference firedb;
     private FirebaseUser currentUser;
+    private String uid;
 
     public TeacherFragment() {
         // Required empty public constructor
@@ -45,7 +46,7 @@ public class TeacherFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_teacher, container, false);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = currentUser.getUid();
+        uid = currentUser.getUid();
 
         System.out.println(uid);
 
@@ -79,6 +80,7 @@ public class TeacherFragment extends Fragment {
                         //Starting Chat page
                         Intent ii=new Intent(getContext(), TeacherChat.class);
                         ii.putExtra("sid", notification.getUid());
+                        ii.putExtra("uid",uid);
                         startActivity(ii);
                     }
                 });
