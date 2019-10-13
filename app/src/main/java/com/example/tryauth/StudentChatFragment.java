@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,7 @@ public class StudentChatFragment extends Fragment {
     private View mView;
     private FirebaseUser currentUser;
     private DatabaseReference fireBaseDataBase;
+    FloatingActionButton msgButton;
     private String uid,tid;
 
     public StudentChatFragment() {
@@ -56,6 +58,18 @@ public class StudentChatFragment extends Fragment {
         student_chat_recycler_view = mView.findViewById(R.id.student_chat_recycler_view);
         student_chat_recycler_view.setHasFixedSize(true);
         student_chat_recycler_view.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        msgButton = mView.findViewById(R.id.student_floating_button);
+        msgButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),ChatStudent.class);
+                intent.putExtra("uid",uid);
+                intent.putExtra("tid",tid);
+                startActivity(intent);
+            }
+        });
+
 
         return mView;
     }
@@ -146,7 +160,7 @@ public class StudentChatFragment extends Fragment {
     void studentAction(final String url){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Action");
-        builder.setMessage("If once deleted than cannot be recovered.");
+        builder.setMessage("Once deleted than cannot be recovered.");
 
         builder.setPositiveButton("Download File", new DialogInterface.OnClickListener() {
             @Override
