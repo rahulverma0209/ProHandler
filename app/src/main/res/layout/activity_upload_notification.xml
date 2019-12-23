@@ -12,7 +12,7 @@
 
     <Button
         android:id="@+id/selectDoc"
-        android:layout_width="226dp"
+        android:layout_width="0dp"
         android:layout_height="63dp"
         android:layout_marginStart="92dp"
         android:layout_marginTop="45dp"
@@ -26,7 +26,7 @@
 
     <Button
         android:id="@+id/upload"
-        android:layout_width="226dp"
+        android:layout_width="0dp"
         android:layout_height="63dp"
         android:layout_marginStart="92dp"
         android:layout_marginTop="20dp"
@@ -40,7 +40,7 @@
 
     <EditText
         android:id="@+id/title"
-        android:layout_width="313dp"
+        android:layout_width="0dp"
         android:layout_height="41dp"
         android:layout_marginStart="48dp"
         android:layout_marginTop="62dp"
@@ -56,7 +56,7 @@
 
     <EditText
         android:id="@+id/description"
-        android:layout_width="313dp"
+        android:layout_width="0dp"
         android:layout_height="134dp"
         android:layout_marginStart="46dp"
         android:layout_marginTop="45dp"

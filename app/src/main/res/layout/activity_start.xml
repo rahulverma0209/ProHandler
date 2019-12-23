@@ -9,7 +9,7 @@
 
     <Button
         android:id="@+id/blogin"
-        android:layout_width="319dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="46dp"
         android:layout_marginTop="40dp"
@@ -25,7 +25,7 @@
 
     <EditText
         android:id="@+id/email"
-        android:layout_width="319dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="46dp"
         android:layout_marginTop="88dp"
@@ -43,7 +43,7 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="319dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="46dp"
         android:layout_marginTop="36dp"

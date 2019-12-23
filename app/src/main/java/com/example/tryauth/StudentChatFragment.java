@@ -135,7 +135,10 @@ public class StudentChatFragment extends Fragment {
         public void setStatus(String status) {
             LinearLayout chatLinearLayout = mview.findViewById(R.id.chatLinearLayout);
             TextView textView = mview.findViewById(R.id.chat_status);
-            textView.setText(" Status : "+status);
+            if (status.contains("Pending"))
+                textView.setText(" Status : Pending");
+            else
+                textView.setText(" Status : "+status);
 
             if (status.equals("Rejected")){
                 chatLinearLayout.setBackgroundResource(R.color.statusReject);

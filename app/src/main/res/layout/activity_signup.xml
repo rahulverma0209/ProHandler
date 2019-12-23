@@ -8,8 +8,8 @@
 
     <Button
         android:id="@+id/signup"
-        android:layout_width="137dp"
-        android:layout_height="59dp"
+        android:layout_width="133dp"
+        android:layout_height="54dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="37dp"
         android:background="@drawable/button_round"
@@ -19,7 +19,7 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="366dp"
+        android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginStart="23dp"
         android:layout_marginTop="18dp"
@@ -35,7 +35,7 @@
 
     <EditText
         android:id="@+id/confirm_password"
-        android:layout_width="366dp"
+        android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginStart="23dp"
         android:layout_marginTop="18dp"
@@ -52,7 +52,7 @@
     <Button
         android:id="@+id/cancel"
         android:layout_width="137dp"
-        android:layout_height="59dp"
+        android:layout_height="56dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="42dp"
@@ -64,7 +64,7 @@
 
     <EditText
         android:id="@+id/email"
-        android:layout_width="366dp"
+        android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginStart="23dp"
         android:layout_marginTop="18dp"
@@ -80,7 +80,7 @@
 
     <EditText
         android:id="@+id/usn"
-        android:layout_width="366dp"
+        android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginStart="23dp"
         android:layout_marginTop="18dp"
@@ -96,7 +96,7 @@
 
     <EditText
         android:id="@+id/sem"
-        android:layout_width="366dp"
+        android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginStart="23dp"
         android:layout_marginTop="18dp"
@@ -112,7 +112,7 @@
 
     <EditText
         android:id="@+id/name"
-        android:layout_width="366dp"
+        android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginStart="23dp"
         android:layout_marginTop="40dp"
@@ -128,7 +128,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="118dp"
+        android:layout_width="0dp"
         android:layout_height="94dp"
         android:layout_marginStart="137dp"
         android:layout_marginTop="13dp"

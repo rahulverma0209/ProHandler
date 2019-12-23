@@ -160,7 +160,7 @@ public class ChatStudent extends AppCompatActivity {
 
                                         HashMap<String,String> chatData = new HashMap<>();
                                         chatData.put("title",cut);
-                                        chatData.put("status","Pending");
+                                        chatData.put("status","Pendingz" + key.toString());
                                         if(chat_msg.getText().toString().equals(""))
                                             chatData.put("feedback","");
                                         else
